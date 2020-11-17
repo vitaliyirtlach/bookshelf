@@ -1,30 +1,43 @@
-import * as path from "path"
-import * as webpack from "webpack"
+import {join, resolve} from "path"
+import { Configuration } from "webpack"
 import HTMLWebpackPlugin from "html-webpack-plugin"
-import {CleanWebpackPlugin} from "clean-webpack-plugin"
+import { CleanWebpackPlugin } from "clean-webpack-plugin"
+import TerserWebpackPlugin from "terser-webpack-plugin"
+import CopyWebpackPlugin from "copy-webpack-plugin"
 
-const config: webpack.Configuration = {
-    entry: path.join(__dirname, "src", "index.tsx"),
+
+export default {
+    entry: join(__dirname, "src", "index.tsx"),
     target: "web",
     devtool: "inline-source-map",
     resolve: {
         alias: {
-            "@": path.resolve(__dirname, "src/")
+            "@": resolve(__dirname, "src/"),
+            "@styles": resolve(__dirname, "src", "styles/")
         },
         extensions: [".js", ".jsx", ".ts", ".tsx"]
     },
     devServer: {
         open: true,
         port: 3000,
+        hot: true,
         compress: true,
-        contentBase: path.join(__dirname, "dist")
+        contentBase: join(__dirname, "build")
     },
     module: {
         rules: [
             {
+                test: /\.css$/i,
+                use: ["style-loader", "css-loader"]
+            },
+            {
                 test: /\.tsx?$/i,
                 loader: 'ts-loader',
                 exclude: "/node_modules/"
+            },
+            {
+                test: /\.s[ac]ss$/i,
+                use: ["style-loader", "css-loader", "sass-loader"]
             }
         ] 
         
@@ -32,19 +45,32 @@ const config: webpack.Configuration = {
     plugins: [
         new CleanWebpackPlugin(),
         new HTMLWebpackPlugin({
-            template: path.join(__dirname, "src", "index.html"),
+            template: join(__dirname, "public", "index.html"),
             minify: {
                 collapseWhitespace: true,
                 removeComments: true,
                 removeRedundantAttributes: true,
                 useShortDoctype: true
               }
+        }),
+        new CopyWebpackPlugin({
+            patterns: [{
+                from: resolve(__dirname, "public", "assets"),
+                to: resolve(__dirname, "build")
+            }]
         })
     ],
+    optimization: {
+        splitChunks: {
+            chunks: "all"
+        },
+        minimize: true,
+        minimizer: [
+            new TerserWebpackPlugin()
+        ]
+    },
     output: {
-        filename: "[filename].[contenthash].js",
-        path: path.resolve(__dirname, "dist")
+        filename: "[name].[contenthash].js",
+        path: resolve(__dirname, "build")
     }
-}
-
-export default config
+} as Configuration
