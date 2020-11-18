@@ -4,13 +4,11 @@ import HTMLWebpackPlugin from "html-webpack-plugin"
 import { CleanWebpackPlugin } from "clean-webpack-plugin"
 import TerserWebpackPlugin from "terser-webpack-plugin"
 import CopyWebpackPlugin from "copy-webpack-plugin"
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 
 const isDev = process.env.NODE_ENV === "development"
 
 const getPlugins = (isDev: boolean): Array<any> => {
     const devPlugins = [
-        new BundleAnalyzerPlugin(),
         new HotModuleReplacementPlugin()
     ]
     const common = [
