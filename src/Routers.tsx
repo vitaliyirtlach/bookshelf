@@ -9,7 +9,7 @@ const Routers: React.FC<Props> = () => {
     return (
         <Switch>
             <Route component={App} path="/" exact/>
-            <Route component={Custom404} path="*"  />
+            <Route component={Custom404} />
         </Switch>
     )
 }

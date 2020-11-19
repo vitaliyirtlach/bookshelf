@@ -1,23 +1,24 @@
 import { ApolloServer, gql } from 'apollo-server-express';
 import { typeDefs, resolvers } from './schema/schema';
 import express from "express"
-import { webpack } from 'webpack';
-import config from './webpack.config';
-import WebpackDevMiddleware from 'webpack-dev-middleware';
+import mongoose from "mongoose"
 
 const app = express()
-const compiler = webpack(config)
-if (process.env.NODE_ENV === "production") {
-    app.use(WebpackDevMiddleware(compiler))
+const port = 4000
+const start = async () => {
+  await mongoose.connect("", {
+    useNewUrlParser: true
+  })
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+  });
+  
+  server.applyMiddleware({ app });
+  
+  app.listen({ port }, () =>
+    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+  )
 }
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
 
-server.applyMiddleware({ app });
-
-app.listen({ port: 3000 }, () =>
-  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
-)
-
+start()

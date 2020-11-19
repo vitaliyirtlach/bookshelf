@@ -27,7 +27,7 @@ const getPlugins = (isDev: boolean): Array<any> => {
         new CopyWebpackPlugin({
             patterns: [{
                 from: resolve(__dirname, "public", "assets"),
-                to: resolve(__dirname, "build")
+                to: resolve(__dirname, "build", "public")
             }]
         }),
     ]
@@ -38,7 +38,7 @@ const getPlugins = (isDev: boolean): Array<any> => {
 }
 
 export default {
-    entry: ["@babel/polyfill", join(__dirname, "src", "index.tsx")],
+    entry: join(__dirname, "src", "index.tsx"),
     target: "web",
     mode: "development",
     devtool: isDev ? "source-map" : false,
@@ -54,7 +54,9 @@ export default {
         port: 3000,
         hot: isDev,
         compress: true,
-        contentBase: join(__dirname, "build")
+        publicPath: "/",
+        contentBase: join(__dirname, "build"),
+        historyApiFallback: true,
     },
     module: {
         rules: [
@@ -120,7 +122,7 @@ export default {
     },
     output: {
         filename: "[name].js",
-        path: resolve(__dirname, "build"),
-        publicPath: "/"
+        path: resolve(join(__dirname, "build")),
+        
     }
 } as Configuration

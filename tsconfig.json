@@ -16,6 +16,9 @@
     "paths": {
       "@styles/*": [
         "src/styles/*"
+      ],
+      "@models/*": [
+        "models/*"
       ]
     }
   }
