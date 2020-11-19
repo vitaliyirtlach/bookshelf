@@ -4,9 +4,11 @@ import { BrowserRouter } from "react-router-dom"
 import "./index.scss"
 import { Routers } from "./Routers"
 
+const container = document.querySelector("#root")
+
 render(
     <BrowserRouter>
         <Routers />
     </BrowserRouter>,
-    document.querySelector("#root")
+    container
 )

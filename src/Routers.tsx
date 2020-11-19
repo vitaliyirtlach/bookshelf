@@ -1,6 +1,6 @@
 import React from "react"
-import { BrowserRouter, Route, Switch } from "react-router-dom"
-import { Custom404 } from "./404"
+import { Route, Switch } from "react-router-dom"
+import { Custom404 } from "./components/404/404"
 import { App } from "./App"
 
 interface Props {}

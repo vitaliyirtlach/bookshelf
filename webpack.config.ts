@@ -4,6 +4,7 @@ import HTMLWebpackPlugin from "html-webpack-plugin"
 import { CleanWebpackPlugin } from "clean-webpack-plugin"
 import TerserWebpackPlugin from "terser-webpack-plugin"
 import CopyWebpackPlugin from "copy-webpack-plugin"
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
 
 const isDev = process.env.NODE_ENV === "development"
 
@@ -11,8 +12,9 @@ const getPlugins = (isDev: boolean): Array<any> => {
     const devPlugins = [
         new HotModuleReplacementPlugin()
     ]
-    const common = [
+    let common = [
         new CleanWebpackPlugin(),
+        new MiniCssExtractPlugin(),
         new HTMLWebpackPlugin({
             template: join(__dirname, "public", "index.html"),
             minify: {
@@ -30,7 +32,7 @@ const getPlugins = (isDev: boolean): Array<any> => {
         }),
     ]
     if (isDev) {
-        common.concat(devPlugins)
+        common = common.concat(devPlugins)
     }
     return common
 }
@@ -41,11 +43,11 @@ export default {
     mode: "development",
     devtool: isDev ? "source-map" : false,
     resolve: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"],
         alias: {
-            "@": resolve(__dirname, "src/"),
-            "@styles": resolve(__dirname, "src", "styles/")
-        },
-        extensions: [".js", ".jsx", ".ts", ".tsx"]
+            "@": resolve(__dirname, "src"),
+            "@styles": resolve(__dirname, "src", "styles"),
+        }
     },
     devServer: {
         open: isDev,
@@ -73,7 +75,13 @@ export default {
             },
             {
                 test: /\.css$/i,
-                use: ["style-loader", "css-loader"]
+                use: [{
+                    loader: MiniCssExtractPlugin.loader,
+                    options: {
+                      modules: true,
+                      importLoaders: 1,
+                    },
+                  }, "css-loader"]
             },
             {
                 test: /\.tsx?$/i, 
@@ -90,7 +98,13 @@ export default {
             },
             {
                 test: /\.s[ac]ss$/i,
-                use: ["style-loader", "css-loader", "sass-loader"]
+                use: [MiniCssExtractPlugin.loader, {
+                    loader: 'css-loader',
+                    options: {
+                      modules: true,
+                      importLoaders: 1,
+                    },
+                  }, "sass-loader"]
             }
         ] 
         
