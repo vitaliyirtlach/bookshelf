@@ -3,8 +3,15 @@ import { typeDefs, resolvers } from './schema/schema';
 import express from "express"
 import mongoose from "mongoose"
 import { apiConfig } from './config/api';
+import path from 'path';
 
+const isDev = process.env.NODE_ENV === "development"
 const app = express()
+app.use(express.static(path.join(__dirname, 'build')));
+app.get('*', function (req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 const port = 4000
 const start = async () => {
   await mongoose.connect(apiConfig.url, {
