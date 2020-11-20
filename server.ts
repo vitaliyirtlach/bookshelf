@@ -7,10 +7,12 @@ import path from 'path';
 
 const isDev = process.env.NODE_ENV === "development"
 const app = express()
-app.use(express.static(path.join(__dirname, 'build')));
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
+if (!isDev) {
+  app.use(express.static(path.join(__dirname, 'build')));
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
 
 const port = 4000
 const start = async () => {

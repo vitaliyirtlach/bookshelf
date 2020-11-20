@@ -1,7 +1,7 @@
 import {Book} from "../models/Book"
 export const resolvers  = {
     Query: {
-        hello: () => "Hello"
+        listOfBooks: () => Book.find()
     },
     Mutation: {
        createBook: async (_: any, { name, plot, cover, author }: any) => {
