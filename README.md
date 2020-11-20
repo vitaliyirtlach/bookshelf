@@ -4,5 +4,3 @@ The application is built from scratch using a [TypeScript](https://www.typescrip
 ### scripts
 
 > npm run dev
-
-> npm run build

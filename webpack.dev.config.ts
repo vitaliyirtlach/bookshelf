@@ -38,7 +38,7 @@ const getPlugins = (isDev: boolean): Array<any> => {
 }
 
 export default {
-    entry: join(__dirname, "src", "index.tsx"),
+    entry: ["@babel/polyfill", join(__dirname, "src", "index.tsx")],
     target: "web",
     mode: "development",
     devtool: isDev ? "source-map" : false,
@@ -92,7 +92,7 @@ export default {
                     loader: "babel-loader",
                     options: {
                         presets: ["@babel/preset-env", "@babel/preset-typescript", "@babel/preset-react"],
-                        plugins: ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-runtime"]
+                        plugins: ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-runtime", "babel-plugin-transform-async-to-generator"]
                     },
                     
                 }, "ts-loader"],

@@ -3,7 +3,7 @@
     "sourceMap": true,
     "noImplicitAny": true,       
     "allowSyntheticDefaultImports": true,       
-    "target": "es6",                       
+    "target": "es5",                       
     "module": "commonjs",                     
     "jsx": "react", 
     "outDir": "./build",  
@@ -17,9 +17,6 @@
       "@styles/*": [
         "src/styles/*"
       ],
-      "@models/*": [
-        "models/*"
-      ]
     }
   }
 }

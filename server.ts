@@ -1,12 +1,13 @@
-import { ApolloServer, gql } from 'apollo-server-express';
+import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers } from './schema/schema';
 import express from "express"
 import mongoose from "mongoose"
+import { apiConfig } from './config/api';
 
 const app = express()
 const port = 4000
 const start = async () => {
-  await mongoose.connect("", {
+  await mongoose.connect(apiConfig.url, {
     useNewUrlParser: true
   })
   const server = new ApolloServer({
