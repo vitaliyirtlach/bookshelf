@@ -4,6 +4,9 @@ import express from "express"
 import mongoose from "mongoose"
 import { apiConfig } from './config/api';
 import path from 'path';
+import cookieParser from "cookie-parser"
+import { auth } from './middleware/auth.middleware';
+import cors from "cors"
 
 const isDev = process.env.NODE_ENV === "development"
 const app = express()
@@ -17,13 +20,18 @@ if (!isDev) {
 const port = 4000
 const start = async () => {
   await mongoose.connect(apiConfig.url, {
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useCreateIndex: true
   })
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    context: ({req, res}) => ({req, res})
   });
-  
+
+  app.use(cookieParser())
+  app.use(cors())
+  app.use(auth)
   server.applyMiddleware({ app });
   
   app.listen({ port }, () =>

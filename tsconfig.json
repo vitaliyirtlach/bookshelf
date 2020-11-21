@@ -10,7 +10,10 @@
     "strict": true,  
     "esModuleInterop": true, 
     "moduleResolution": "node",
-    "skipLibCheck": true,                 
+    "skipLibCheck": true,  
+    "removeComments": true,
+    "experimentalDecorators": true,        
+    "strictFunctionTypes": true,       
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
     "paths": {

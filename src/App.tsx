@@ -1,15 +1,11 @@
 import React, { useEffect } from "react"
-import axios from "axios"
+import { BooksList } from "./components/BooksList/BooksList"
+import { MainLayout } from "./layouts/MainLayout"
 interface Props {}
 
 export const App: React.FC<Props> = ()  => {
-    useEffect(() => {
-        const getBooks =  async() => {
-            
-        }
-        getBooks()
-    })
-    return <div>    
-        Hello World!
-    </div>
+    return( 
+    <MainLayout>    
+        <BooksList />
+    </MainLayout>)
 }
