@@ -1,3 +1,4 @@
 export const jwt = {
-    secret: "Bookshelf"
+    'access-token': "Bookshelf",
+    'refresh-token': "Bookshelf Refresh"
 }

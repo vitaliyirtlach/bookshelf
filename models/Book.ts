@@ -3,10 +3,7 @@ import mongoose from "mongoose"
 const BookSchema = new mongoose.Schema({
     name: String,
     plot: String,
-    author: {
-        type: mongoose.Types.ObjectId,
-        ref: "User"
-    },
+    author: String,
     cover: String
 })
 

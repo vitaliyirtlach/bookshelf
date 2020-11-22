@@ -2,7 +2,7 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
     type Query {
-        me: User!,
+        me: User,
         listOfBooks: [Book!] 
     }
     
@@ -24,7 +24,7 @@ export const typeDefs = gql`
 
     type Mutation {
         createBook(name: String, plot: String, cover: String, author: String): Book,
-        signup(username: String, password: String, email: String): User!,
-        login(email: String, password: String): User!
+        signup(username: String, password: String, email: String): User,
+        login(email: String, password: String): User
     }
 `

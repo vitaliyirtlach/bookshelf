@@ -19,16 +19,15 @@ if (!isDev) {
 
 const port = 4000
 const start = async () => {
-  await mongoose.connect(apiConfig.url, {
-    useNewUrlParser: true,
-    useCreateIndex: true
-  })
   const server = new ApolloServer({
     typeDefs,
     resolvers,
     context: ({req, res}) => ({req, res})
   });
-
+  await mongoose.connect(apiConfig.url, {
+    useNewUrlParser: true,
+    useCreateIndex: true
+  })
   app.use(cookieParser())
   app.use(cors())
   app.use(auth)

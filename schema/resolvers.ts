@@ -1,8 +1,7 @@
 import { Book } from "../models/Book"
 import { User } from  "../models/User"
 import { compare, hash } from "bcrypt"
-import { sign } from "jsonwebtoken"
-import { jwt } from "../config/jwt"
+import { createTokens } from "../utils/createTokens"
 
 export const resolvers  = {
     Query: {
@@ -26,31 +25,17 @@ export const resolvers  = {
             const hashedPassword = await hash(password, 10)
             const candidates = [await User.findOne({ username }), await User.findOne({ email })]
             if (!candidates.length) return null
-            const user = new User({
-                username,
-                email,
-                password: hashedPassword
-            }).save()
+            const user = new User({ username, email, password: hashedPassword }).save()
             return user
         },
         login: async(_: any, {email, password}: any, { res }: any) => {
-
             const user: any = await User.findOne({ email })
             if (!user) return null
             const valid = await compare(password, user.password)
             if (!valid) return null
-            const tokens = {
-                access: sign({ id: user.id }, jwt.secret, {
-                    expiresIn: "14 days"
-                }),
-                refresh: sign({ id: user.id }, jwt.secret, {
-                    expiresIn: "14 days"
-                })
-            }
-            
+            const tokens = createTokens(user)
             res.cookie("refresh-token", tokens.refresh, {expire: 60*60*24*7})
-            res.cookie("access-token", tokens.refresh, {expire: 60*60})
-
+            res.cookie("access-token", tokens.access, {expire: 60*60})
             return user
         }
     }
