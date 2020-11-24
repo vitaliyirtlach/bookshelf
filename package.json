@@ -42,6 +42,7 @@
     "@types/webpack-bundle-analyzer": "^3.9.0",
     "@types/webpack-dev-middleware": "^3.7.2",
     "@types/webpack-dev-server": "^3.11.1",
+    "@types/yup": "^0.29.9",
     "apollo-server-express": "^2.19.0",
     "axios": "^0.21.0",
     "babel-loader": "^8.2.1",
@@ -56,6 +57,7 @@
     "css-loader": "^5.0.1",
     "express": "^4.17.1",
     "fast-async": "^6.3.8",
+    "formik": "^2.2.5",
     "graphql": "^15.4.0",
     "html-webpack-plugin": "^4.5.0",
     "jsonwebtoken": "^8.5.1",
@@ -75,7 +77,8 @@
     "webpack-cli": "^4.2.0",
     "webpack-dev-middleware": "^4.0.2",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.4.0"
+    "webpack-merge": "^5.4.0",
+    "yup": "^0.31.0"
   },
   "dependencies": {
     "@types/react": "^16.9.56",

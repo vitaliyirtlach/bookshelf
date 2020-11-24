@@ -6,6 +6,7 @@ import { createTokens } from "../utils/createTokens"
 export const resolvers  = {
     Query: {
         me: (_: any, __: any, { req }: any) => {
+     
             if (!req.userId) return null
             return User.findOne({_id: req.userId})
         },
@@ -21,11 +22,18 @@ export const resolvers  = {
             await book.save()
             return book
         },
-        signup: async (_: any, { username, email, password }: any) => {
+        signup: async (_: any, { username, email, password }: any, { res }: any) => {
             const hashedPassword = await hash(password, 10)
             const candidates = [await User.findOne({ username }), await User.findOne({ email })]
             if (!candidates.length) return null
             const user = new User({ username, email, password: hashedPassword }).save()
+            const tokens = createTokens(user)
+            res.cookie("refresh-token", tokens.refresh, {
+                maxAge: 1000 * 60 * 60 * 24 * 14
+            })
+            res.cookie("access-token", tokens.access, {
+                maxAge: 1000 * 60 * 60 * 24 * 7
+            })
             return user
         },
         login: async(_: any, {email, password}: any, { res }: any) => {
@@ -34,8 +42,12 @@ export const resolvers  = {
             const valid = await compare(password, user.password)
             if (!valid) return null
             const tokens = createTokens(user)
-            res.cookie("refresh-token", tokens.refresh, {expire: 60*60*24*7})
-            res.cookie("access-token", tokens.access, {expire: 60*60})
+            res.cookie("refresh-token", tokens.refresh, {
+                maxAge: 1000 * 60 * 60 * 24 * 14
+            })
+            res.cookie("access-token", tokens.access, {
+                maxAge: 1000 * 60 * 60 * 24 * 7
+            })
             return user
         }
     }

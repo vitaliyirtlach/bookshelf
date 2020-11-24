@@ -28,10 +28,18 @@ const start = async () => {
     useNewUrlParser: true,
     useCreateIndex: true
   })
+
+  app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+  }))
   app.use(cookieParser())
-  app.use(cors())
   app.use(auth)
-  server.applyMiddleware({ app });
+  app.use((req, res, next) => {
+    console.log(req.cookies)
+    next()
+  })
+  server.applyMiddleware({ app, cors: false });
   
   app.listen({ port }, () =>
     console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)

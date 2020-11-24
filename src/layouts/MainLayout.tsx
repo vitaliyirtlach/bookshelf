@@ -5,27 +5,24 @@ import { gql, useQuery } from "@apollo/client"
 import { MainLoader } from "../components/Loaders/MainLoader"
 
 const AUTH = gql`
-    query {
+    query CurrentUserForLayout  {
         me {
-            username
-            id
-            email
-            books {
-                name
-                plot
-                author
-                id
-                cover
-            }
+          username
+          id
+          email
         }
     }
 `
 export const MainLayout: React.FC = ({children}) => {
-    const {data} = useQuery(AUTH) 
+    const {data, loading, error} = useQuery(AUTH, {
+        fetchPolicy: "cache-first", 
+    }) 
+
+    if (loading) return <div>Loading</div>
+    if (error) return <div>Something went wrong</div>
     if (!data?.me) {
-      return <Redirect to="/signup" /> 
-    } 
-    
+        return <Redirect to="/signup" />
+    }
     return( 
     <Suspense fallback={<MainLoader />}>
         <header>

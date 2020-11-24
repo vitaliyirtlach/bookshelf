@@ -14,7 +14,7 @@ interface BooksData {
 }
 
 const LIST_QUERY = gql`
-    {   
+    query {   
         listOfBooks{
             name
             id
