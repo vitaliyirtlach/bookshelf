@@ -1,0 +1,21 @@
+.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background-color: #008cff;
+    justify-content: center;
+    h1 {
+        text-align: center;
+        font-size: 120px;
+        font-family: 'Goldman', cursive;
+    }
+    div {
+        text-align: center;
+        font-family: 'Mukta', sans-serif;
+        font-size: larger;
+    }
+    a {
+        color: white;
+    }
+}

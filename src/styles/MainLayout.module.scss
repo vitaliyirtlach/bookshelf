@@ -3,3 +3,10 @@
     width: 90%;
     margin: auto;
 }
+
+.header-list {
+    display: flex;
+    * {
+        margin-left: 10px;
+    }
+}

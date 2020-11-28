@@ -15,10 +15,6 @@ const UserSchema = new Schema ({
         required: true,
         unique: true
     },
-    books: [{
-        type: Types.ObjectId,
-        ref: "Book"
-    }],
     cover: String
 })
 

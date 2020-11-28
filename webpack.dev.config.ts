@@ -12,7 +12,6 @@ export default merge<Configuration>(WebpackCommonConfig, {
         port: 3000,
         hot: true,
         compress: true,
-        publicPath: "/",
         contentBase: join(__dirname, "build"),
         historyApiFallback: true,
     },

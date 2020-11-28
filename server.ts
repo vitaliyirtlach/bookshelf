@@ -35,10 +35,6 @@ const start = async () => {
   }))
   app.use(cookieParser())
   app.use(auth)
-  app.use((req, res, next) => {
-    console.log(req.cookies)
-    next()
-  })
   server.applyMiddleware({ app, cors: false });
   
   app.listen({ port }, () =>
@@ -46,4 +42,4 @@ const start = async () => {
   )
 }
 
-start()
+start().catch(e => console.log(e))

@@ -16,6 +16,8 @@
 }
 
 .information {
+    display: flex;
+    flex-direction: column;
     width: 80%;
     margin: 5px;
     .name {
@@ -24,11 +26,13 @@
             text-decoration: underline;
         }
     }
-    .plot {
-        
-    }
     .author {
         color: gray;
         text-decoration: underline;
+    }
+    .plot {
+        width: 100%;
+
+        word-wrap: break-word;
     }
 }

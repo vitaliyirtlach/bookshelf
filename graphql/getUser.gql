@@ -1,0 +1,8 @@
+
+# For get user profile
+query getUserProfile($id: ID!) {
+        getUser(id: $id) {
+            username
+    		email
+        }
+}

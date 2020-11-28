@@ -1,51 +1,65 @@
 import { gql, useQuery } from "@apollo/client"
-import { IBook } from "interfaces/IBook"
+import { IBook } from "../../../interfaces/IBook"
 import React from "react"
-import styles from "@styles/BooksList.module.scss"
-import { NavLink } from "react-router-dom"
+import { MainLoader } from "../Loaders/MainLoader"
+import { BookItem } from "./BookItem"
 
 interface Props {
-    author?: string
-    name?: string  
+    name?: string | null,
+    author?: string | null
 }
 
 interface BooksData {
-    listOfBooks: [IBook]
+    getBooks: [IBook]
 }
 
-const LIST_QUERY = gql`
-    query {   
-        listOfBooks{
+const BOOKS = gql`
+    query {
+	    getBooks {
             name
-            id
             author
-            cover
+            cover {
+                data
+                contentType
+            }
             plot
+            id
         }
-    }
+    }   
 `
 
-export const BooksList: React.FC<Props> = ({}) => {
-    const {data, loading, error} = useQuery<BooksData>(LIST_QUERY, {
-        fetchPolicy: "cache-first",
-    })
+const BOOKS_BY_PARAMETRS = gql`
+    query GETBOOKS($name: String, $author: String) {
+        getBooks(name: $name, author: $author) {
+            name
+            author
+            cover {
+                data
+                contentType
+            }
+            plot
+            id
+        }
+    } 
+`
 
-    if (loading) return <div>Loading...</div>
+
+export const BooksList: React.FC<Props> = ({author, name}) => {
+    const QUERY =  author || name ? BOOKS_BY_PARAMETRS : BOOKS 
+
+    const {data, loading, error} = useQuery<BooksData>(QUERY, {
+        variables: { author, name },
+        fetchPolicy: "cache-first",
+        pollInterval: 500
+    })
+    
+    if (loading) return <MainLoader />
     if (error) return <div>Something went wrong</div>
 
     return (
     <>
-    {data?.listOfBooks.map(book => (
-            <div key={book.id} className={styles.book}>
-                <div className={styles.cover}>
-                    <img src={book.cover} />
-                </div>
-                <div className={styles.information}>
-                    <NavLink className={styles.name} to={`/${book.name}`}>{book.name}</NavLink>
-                    <div className={styles.author}>{book.author}</div>
-                    <div className={styles.plot}>{book.plot}</div>
-                </div>
-            </div>
-        ))}
+    {data?.getBooks.length ? 
+    data?.getBooks.map(book => <BookItem author={book.author} key={book.id} book={book}/> ) :
+    <div>Nothing was found</div>}
     </>)
 }

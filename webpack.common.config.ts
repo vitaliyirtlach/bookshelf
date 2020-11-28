@@ -5,10 +5,11 @@ import { CleanWebpackPlugin } from "clean-webpack-plugin"
 import TerserWebpackPlugin from "terser-webpack-plugin"
 import CopyWebpackPlugin from "copy-webpack-plugin"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import {getTransformer} from 'ts-transform-graphql-tag'
 
 export default {
+    context: resolve(__dirname, "src"),
     entry: ["@babel/polyfill", join(__dirname, "src", "index.tsx")],
-    target: "web",
     resolve: {
         extensions: [".js", ".jsx", ".ts", ".tsx"],
         alias: {
@@ -27,7 +28,8 @@ export default {
                         presets: ["@babel/preset-env", "@babel/preset-react"],
                         plugins: [
                             "@babel/plugin-proposal-class-properties",
-                            "@babel/plugin-transform-runtime"
+                            "@babel/plugin-transform-runtime",
+                            "import-graphql"
                         ]
                     },
                     
@@ -50,10 +52,14 @@ export default {
                     loader: "babel-loader",
                     options: {
                         presets: ["@babel/preset-env", "@babel/preset-typescript", "@babel/preset-react"],
-                        plugins: ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-runtime", "babel-plugin-transform-async-to-generator"]
-                    },
-                    
-                }, "ts-loader"],
+                        plugins: ["@babel/plugin-proposal-class-properties", "@babel/plugin-transform-runtime", "babel-plugin-transform-async-to-generator", "import-graphql"]
+                    },  
+                },{
+                    loader: "ts-loader",
+                    options: {
+                        getCustomTransformers: () => ({ before: [getTransformer()] })
+                    }
+                }],
                 exclude: "/node_modules/"
             },
             {
@@ -65,7 +71,12 @@ export default {
                       importLoaders: 1,
                     },
                   }, "sass-loader"]
-            }
+            },
+            {
+                test: /\.(graphql|gql)$/,
+                exclude: /node_modules/,
+                loader: 'graphql-tag/loader'
+              }
         ]  
     },
     plugins: [
@@ -87,7 +98,6 @@ export default {
             }]
         }),
     ],
-    mode: "none",
     optimization: {
         splitChunks: {
             chunks: "all"
@@ -99,6 +109,7 @@ export default {
     
     output: {
         filename: "[name].bundle.js",
-        path: resolve(__dirname, "build")
+        path: resolve(__dirname, "build"),
+        publicPath: "/"
     }
 } as Configuration

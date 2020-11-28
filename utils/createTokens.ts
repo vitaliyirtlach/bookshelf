@@ -6,9 +6,6 @@ export const createTokens = (user: any) => {
         access: sign({ id: user.id }, jwt["access-token"], {
             expiresIn: "7 days"
         }),
-        refresh: sign({ id: user.id }, jwt["refresh-token"], {
-            expiresIn: "14 days"
-        })
     }
     return tokens
 }
