@@ -15,5 +15,5 @@ The application is built from scratch using a [TypeScript](https://www.typescrip
     - SCSS/SASS
 ### scripts
 
-> npm install
+> npm install           
 > npm run dev
